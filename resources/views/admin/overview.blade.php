@@ -126,7 +126,7 @@
                         <div>
                             <h3 class="text-lg font-semibold text-gray-800">Add New Product</h3>
                             <p class="text-sm text-gray-500">Quickly add products to your inventory.</p>
-                            <a href="{{route('add-product')}}" class="text-green-600 hover:text-green-800 font-medium">Add
+                            <a href="{{route('product.create')}}" class="text-green-600 hover:text-green-800 font-medium">Add
                                 Product</a>
                         </div>
                     </div>

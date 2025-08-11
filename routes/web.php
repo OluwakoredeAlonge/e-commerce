@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -13,12 +14,20 @@ Route::get('/', function () {
 Route::get('/overview', function () {
     return view('admin.overview');
 })->middleware(middleware: ['auth', 'verified'])->name('overview');
-Route::get('/add-product', function () {
-    return view('admin.add-product');
-})->middleware(['auth', 'verified'])->name('add-product');
-Route::get('/products', function () {
-    return view('admin.products');
-})->middleware(['auth', 'verified'])->name('products');
+Route::get('/add-product', [ProductController::class, 'create'])
+    ->middleware(['auth', 'verified'])
+    ->name('product.create');
+Route::post('/products', [ProductController::class, 'store'])
+    ->middleware(['auth', 'verified'])
+    ->name('products.store');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/products', [ProductController::class, 'index'])->name('products');
+    Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+    Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+    
+});
 Route::get('/add-attendant', function () {
     return view('admin.add-attendant');
 })->middleware(['auth', 'verified'])->name('add-attendant');
@@ -46,4 +55,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
