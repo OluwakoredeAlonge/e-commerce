@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CategoryController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -14,26 +15,32 @@ Route::get('/', function () {
 Route::get('/overview', function () {
     return view('admin.overview');
 })->middleware(middleware: ['auth', 'verified'])->name('overview');
-Route::get('/add-product', [ProductController::class, 'create'])
-    ->middleware(['auth', 'verified'])
-    ->name('product.create');
-Route::post('/products', [ProductController::class, 'store'])
-    ->middleware(['auth', 'verified'])
-    ->name('products.store');
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/products', [ProductController::class, 'index'])->name('products');
-    Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-    Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
-    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
-    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
-    
-});
+Route::middleware(['auth', 'verified'])
+    ->prefix('products')
+    ->controller(ProductController::class)
+    ->group(function () {
+        Route::get('/add', 'create')->name('products.create');
+        Route::post('/', 'store')->name('products.store');
+        Route::get('/', 'index')->name('products.index');
+        Route::get('/{product}/edit', 'edit')->name('products.edit');
+        Route::get('/{product}', 'show')->name('products.show');
+        Route::put('/{product}', 'update')->name('products.update');
+        Route::delete('/{product}', 'destroy')->name('products.destroy');
+    });
+
 Route::get('/add-attendant', function () {
     return view('admin.add-attendant');
 })->middleware(['auth', 'verified'])->name('add-attendant');
-Route::get('/add-category', function () {
-    return view('admin.add-category');
-})->middleware(['auth', 'verified'])->name('add-category');
+Route::middleware(['auth', 'verified'])
+    ->prefix('categories')
+    ->controller(CategoryController::class)
+    ->group(function () {
+        Route::get('/', 'index')->name('categories.index');
+        Route::post('/add', 'store')->name('categories.store');
+        Route::get('/{category}/edit',  'edit')->name('categories.edit');
+        Route::delete('/{category}',  'destroy')->name('categories.destroy');
+        Route::put('/{category}',  'update')->name('categories.update');
+    });
 Route::get('/daily-sales', function () {
     return view('admin.daily-sales');
 })->middleware(['auth', 'verified'])->name('daily-sales');

@@ -20,7 +20,7 @@
                     </svg>
                     <span>Overview</span>
                 </a>
-                <a href="{{route('product.create')}}" class="flex items-center space-x-2 px-8 py-4 hover:bg-gray-700">
+                <a href="{{route('products.create')}}" class="flex items-center space-x-2 px-8 py-4 hover:bg-gray-700">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -28,7 +28,7 @@
                     </svg>
                     <span>Add Product</span>
                 </a>
-                <a href="{{route('products')}}" class="flex items-center space-x-2 px-8 py-4 hover:bg-gray-700">
+                <a href="{{route('products.index')}}" class="flex items-center space-x-2 px-8 py-4 hover:bg-gray-700">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -36,7 +36,7 @@
                     </svg>
                     <span>Products</span>
                 </a>
-                <a href="{{route('add-category')}}" class="flex items-center space-x-2 px-8 py-4 hover:bg-gray-700">
+                <a href="{{route('categories.index')}}" class="flex items-center space-x-2 px-8 py-4 hover:bg-gray-700">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

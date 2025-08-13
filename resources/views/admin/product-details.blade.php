@@ -16,7 +16,7 @@
 
 
         <div class="mt-6">
-            <a href="{{ route('products') }}" class="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300">
+            <a href="{{ route('products.index') }}" class="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300">
                 Back to Products
             </a>
         </div>

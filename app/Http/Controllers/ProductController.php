@@ -34,6 +34,18 @@ class ProductController extends Controller
         $categories = Category::orderBy('name')->get();
         return view('admin.add-product', compact('categories'));
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * Validates the input via the ValidateRequest and
+     * creates a new Product model instance with the validated
+     * data. Redirects to the products index page with a success
+     * message.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
    public function store(Request $request)
 {
     //   dd($request->all());
@@ -53,7 +65,7 @@ class ProductController extends Controller
         'description'    => $validated['description'] ?? null,
     ]);
 
-    return redirect()->route('products')->with('success', 'Product added successfully!');
+    return redirect()->route('products.index')->with('success', 'Product added successfully!');
 }
 
     /**
@@ -82,14 +94,14 @@ public function update(Request $request, Product $product)
 
     $product->update($validated);
 
-    return redirect()->route('products')->with('success', 'Product updated successfully!');
+    return redirect()->route('products.index')->with('success', 'Product updated successfully!');
 }
 public function destroy(Product $product)
 {
     $product->delete();
 
     return redirect()
-        ->route('products')
+        ->route('products.index')
         ->with('success', 'Product deleted successfully!');
 }
 public function show(Product $product)
