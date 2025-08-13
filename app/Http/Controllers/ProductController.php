@@ -95,6 +95,16 @@ public function update(Request $request, Product $product)
 
     return redirect()->route('products.index')->with('success', 'Product updated successfully!');
 }
+    /**
+     * Remove the specified product from storage.
+     *
+     * Deletes the provided product instance from the database
+     * and redirects to the products index page with a success message.
+     *
+     * @param \App\Models\Product $product
+     * @return \Illuminate\Http\Response
+     */
+
 public function destroy(Product $product)
 {
     $product->delete();
@@ -110,15 +120,39 @@ public function show(Product $product)
 
     return view('admin.product-details', compact('product'));
 }
+    /**
+     * Fetches products with quantity below the low stock threshold
+     * and passes them to the view as a paginated collection.
+     *
+     * @return \Illuminate\Http\Response
+     */
   public function lowStock()
     {
         // Define your low stock threshold
         $threshold = 10;
 
         // Fetch products with quantity below the threshold
-        $lowStockProducts = Product::with('category')->where('stock_quantity', '<', $threshold)->paginate(20);
+        $lowStockProducts = Product::with('category')
+        ->where('stock_quantity', '<', $threshold)
+        ->paginate(20);
 
-        // Pass them to the view
-        return view('admin.low-stock-products', compact('lowStockProducts'));
+    // Prepare a clean array for Alpine
+    $lowStockProductsJson = $lowStockProducts->map(function ($p) {
+        return [
+            'id' => $p->id,
+            'product_name' => $p->product_name,
+            'category_name' => $p->category->name ?? 'No Category',
+            'price' => $p->price,
+            'stock_quantity' => $p->stock_quantity
+        ];
+    });
+    // Count all products below threshold (ignoring pagination)
+    $lowStockCount = Product::where('stock_quantity', '<', $threshold)->count();
+
+    return view('admin.low-stock-products', [
+        'lowStockProducts' => $lowStockProducts,
+        'lowStockProductsJson' => $lowStockProductsJson,
+         'lowStockCount' => $lowStockCount
+    ]);
     }
 }

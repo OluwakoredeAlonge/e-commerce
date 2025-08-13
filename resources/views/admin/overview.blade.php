@@ -65,7 +65,7 @@
                         </svg>
                         <div>
                             <h3 class="text-lg font-semibold text-gray-800">Low Stock Products</h3>
-                            <p class="text-2xl font-bold text-gray-900">0</p>
+                            <p class="text-2xl font-bold text-gray-900">{{$lowStockCount}}</p>
                             <p class="text-sm text-gray-500">Restock products running low.</p>
                             <a href="{{ route('products.lowStock') }}" class="text-green-600 hover:text-green-800 font-medium">Manage Low
                                 Stock

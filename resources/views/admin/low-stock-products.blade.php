@@ -30,7 +30,10 @@
                 </svg>
                 <div>
                     <h3 class="text-lg font-semibold text-gray-800">Low Stock Products</h3>
-                    <p class="text-2xl font-bold text-gray-900">0</p>
+                    <p class="text-2xl font-bold text-gray-900">
+                        {{ $lowStockCount > 0 ? $lowStockCount : 'All stocked 🎉' }}
+                    </p>
+
                     <p class="text-sm text-gray-500">Number of products with stock below 10 units</p>
                 </div>
             </div>
@@ -40,53 +43,45 @@
             </div>
         </div>
 
-        <!-- Search -->
-        <div class="mb-6 flex flex-col md:flex-row gap-4">
-            <div class="relative flex-1">
-                <input type="text" id="productSearch" placeholder="Search by product name or category..."
-                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-                <svg class="w-5 h-5 absolute right-3 top-3 text-gray-400" fill="none" stroke="currentColor"
-                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-            </div>
-        </div>
+
         @if ($lowStockProducts->isEmpty())
             <p>All products are sufficiently stocked 🎉</p>
         @else
             <!-- Products Table -->
-            <div class="bg-white shadow-lg rounded-lg overflow-x-auto">
-                <table class="min-w-full">
+            <div x-data="lowStockTable()" class="bg-white shadow-lg rounded-lg overflow-x-auto">
+                <!-- Search -->
+                <div class="mb-6 flex flex-col md:flex-row gap-4">
+                    <div class="relative flex-1">
+                        <input type="text" id="productSearch" placeholder="Search by product name or category..."
+                            class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                            x-model="search">
+                        <svg class="w-5 h-5 absolute right-3 top-3 text-gray-400" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <table class="min-w-full mt-5">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Product Name</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Category</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price
-                                (₦)</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock
-                                Quantity</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product Name</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price (₦)</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Stock Quantity</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                         </tr>
                     </thead>
-                    <tbody id="productTable" class="divide-y divide-gray-200">
-                        <!-- Filtered Data for Low Stock (below 10 units) -->
-                        @foreach ($lowStockProducts as $product)
+                    <tbody class="divide-y divide-gray-200">
+                        <template x-for="product in filteredProducts()" :key="product.id">
                             <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $product->product_name }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {{ $product->category->name ?? 'No Category' }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">₦ {{ $product->price }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $product->stock_quantity }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-red-500">Low Stock</td>
+                                <td class="px-6 py-4 text-sm text-gray-900" x-text="product.product_name"></td>
+                                <td class="px-6 py-4 text-sm text-gray-900" x-text="product.category_name"></td>
+                                <td class="px-6 py-4 text-sm text-gray-900">₦ <span x-text="product.price"></span></td>
+                                <td class="px-6 py-4 text-sm text-gray-900" x-text="product.stock_quantity"></td>
+                                <td class="px-6 py-4 text-sm text-red-500">Low Stock</td>
                             </tr>
-                        @endforeach
+                        </template>
                     </tbody>
                 </table>
             </div>
@@ -99,34 +94,21 @@
 
     <!-- JavaScript for Search Functionality -->
     <script>
-        function renderTable(data) {
-            const tableBody = document.getElementById('productTable');
-            tableBody.innerHTML = '';
-            data.forEach(product => {
-                const row = document.createElement('tr');
-                row.className = 'hover:bg-gray-50';
-                row.innerHTML = `
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.name}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.category}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.price}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.stock}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.status}</td>
-        `;
-                tableBody.appendChild(row);
-            });
+        function lowStockTable() {
+            return {
+                search: '',
+                products: @json($lowStockProductsJson),
+                filteredProducts() {
+                    if (!this.search) {
+                        return this.products;
+                    }
+                    return this.products.filter(p =>
+                        p.product_name.toLowerCase().includes(this.search.toLowerCase()) ||
+                        p.category_name.toLowerCase().includes(this.search.toLowerCase())
+                    );
+                }
+            }
         }
-
-        // Initial render
-        renderTable(productData);
-
-        // Search functionality
-        document.getElementById('productSearch').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const filteredData = productData.filter(product =>
-                product.name.toLowerCase().includes(searchTerm) ||
-                product.category.toLowerCase().includes(searchTerm)
-            );
-            renderTable(filteredData);
-        });
     </script>
+
 @endsection
