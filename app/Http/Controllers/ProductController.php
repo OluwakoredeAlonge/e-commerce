@@ -19,10 +19,9 @@ class ProductController extends Controller
    public function index()
     {
         // Eager load category relationship to reduce queries
-        $products = Product::with('category')->paginate(20);
-
+        $products = Product::with('category')->orderBy('created_at', 'ASC')->paginate(50);
         // Pass products data to the view
-        return view('admin.products', compact('products', ));
+        return view('admin.products', compact('products'));
     }
     /**
      * Display the form to create a new product.
@@ -111,5 +110,15 @@ public function show(Product $product)
 
     return view('admin.product-details', compact('product'));
 }
+  public function lowStock()
+    {
+        // Define your low stock threshold
+        $threshold = 10;
 
+        // Fetch products with quantity below the threshold
+        $lowStockProducts = Product::with('category')->where('stock_quantity', '<', $threshold)->paginate(20);
+
+        // Pass them to the view
+        return view('admin.low-stock-products', compact('lowStockProducts'));
+    }
 }

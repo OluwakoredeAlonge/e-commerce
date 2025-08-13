@@ -44,9 +44,8 @@ Route::middleware(['auth', 'verified'])
 Route::get('/daily-sales', function () {
     return view('admin.daily-sales');
 })->middleware(['auth', 'verified'])->name('daily-sales');
-Route::get('/low-stock-products', function () {
-    return view('admin.low-stock-products');
-})->middleware(['auth', 'verified'])->name('low-stock-products');
+Route::get('/low-stock', [ProductController::class, 'lowStock'])
+    ->name('products.lowStock');
 Route::get('/orders', function () {
     return view('admin.orders');
 })->middleware(['auth', 'verified'])->name('orders');

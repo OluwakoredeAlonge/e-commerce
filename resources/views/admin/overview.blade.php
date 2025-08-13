@@ -67,7 +67,7 @@
                             <h3 class="text-lg font-semibold text-gray-800">Low Stock Products</h3>
                             <p class="text-2xl font-bold text-gray-900">0</p>
                             <p class="text-sm text-gray-500">Restock products running low.</p>
-                            <a href="{{ route('low-stock-products') }}" class="text-green-600 hover:text-green-800 font-medium">Manage Low
+                            <a href="{{ route('products.lowStock') }}" class="text-green-600 hover:text-green-800 font-medium">Manage Low
                                 Stock
                                 Products</a>
                         </div>
@@ -86,9 +86,9 @@
                         </svg>
                         <div>
                             <h3 class="text-lg font-semibold text-gray-800">Total Products</h3>
-                            <p class="text-2xl font-bold text-gray-900">0</p>
+                            <p class="text-2xl font-bold text-gray-900">{{$totalProducts}}</p>
                             <p class="text-sm text-gray-500">Track all your inventory items.</p>
-                            <a href="{{ route('products') }}" class="text-green-600 hover:text-green-800 font-medium">Manage
+                            <a href="{{ route('products.index') }}" class="text-green-600 hover:text-green-800 font-medium">Manage
                                 Products</a>
                         </div>
                     </div>
@@ -105,9 +105,9 @@
                         </svg>
                         <div>
                             <h3 class="text-lg font-semibold text-gray-800">Total Categories</h3>
-                            <p class="text-2xl font-bold text-gray-900">0</p>
+                            <p class="text-2xl font-bold text-gray-900">{{$totalCategories}}</p>
                             <p class="text-sm text-gray-500">Organize products with categories.</p>
-                            <a href="{{route('add-category')}}" class="text-green-600 hover:text-green-800 font-medium">Manage
+                            <a href="{{route('categories.index')}}" class="text-green-600 hover:text-green-800 font-medium">Manage
                                 Categories</a>
                         </div>
                     </div>
@@ -126,7 +126,7 @@
                         <div>
                             <h3 class="text-lg font-semibold text-gray-800">Add New Product</h3>
                             <p class="text-sm text-gray-500">Quickly add products to your inventory.</p>
-                            <a href="{{route('product.create')}}" class="text-green-600 hover:text-green-800 font-medium">Add
+                            <a href="{{route('products.create')}}" class="text-green-600 hover:text-green-800 font-medium">Add
                                 Product</a>
                         </div>
                     </div>

@@ -33,8 +33,8 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-          $categories = Category::paginate(20); // fetch all paginated categories
-        return view('admin.add-category', compact('category'));
+        $categories = Category::paginate(20); // fetch all paginated categories
+        return view('admin.add-category', compact('category', 'categories'));
     }
 
 
