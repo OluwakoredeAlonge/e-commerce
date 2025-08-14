@@ -41,9 +41,7 @@ Route::middleware(['auth', 'verified'])
         Route::delete('/{category}',  'destroy')->name('categories.destroy');
         Route::put('/{category}',  'update')->name('categories.update');
     });
-Route::get('/daily-sales', function () {
-    return view('admin.daily-sales');
-})->middleware(['auth', 'verified'])->name('daily-sales');
+Route::view('/daily-sales', 'admin.daily-sales')->middleware(['auth', 'verified'])->name('daily-sales');
 Route::get('/low-stock', [ProductController::class, 'lowStock'])
     ->name('products.lowStock');
 Route::get('/orders', function () {
