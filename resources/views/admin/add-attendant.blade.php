@@ -17,7 +17,7 @@
 
    <!-- Add Attendant Form -->
 <div class="bg-white shadow-lg rounded-lg p-6 mb-6 border-l-4 border-green-500">
-  <form id="addAttendantForm" class="space-y-4">
+  <form id="addAttendantForm" class="space-y-4" action="{{route('')}}">
     <div>
       <label for="fullName" class="block text-sm font-medium text-gray-700">Full Name</label>
       <input type="text" id="fullName" name="fullName" placeholder="Enter full name" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
@@ -71,6 +71,7 @@
             <option value="Active" selected>Active</option>
             <option value="Inactive">Inactive</option>
           </select>
+            <a href="#" class="inline-block bg-blue-600 text-white font-semibold py-2 px-3 rounded-lg shadow-md hover:bg-blue-700 hover:shadow-lg transition-all duration-300 ease-in-out">Update  </a>
         </td>
         <td class="px-6 py-4 text-sm">
           <a href="#" class="text-red-600 hover:text-red-800">Delete</a>

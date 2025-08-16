@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
         User::firstOrCreate([
             'name' => 'Test User',
             'email' => 'test@example.com',
-             'password' => Hash::make('password'), // hash it
+            'role' => 'superadmin',
+            'password' => Hash::make('password'), // hash it
         ]);
         $this->call(BusinessSeeder::class);
         $this->call(ProductCategorySeeder::class);

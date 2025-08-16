@@ -1,36 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.dashboard')
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E-Commerce POS</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <style>
-    /* Custom styles to match process-sale.html navbar UI */
-    .card {
-      background-color: white;
-      padding: 1.5rem;
-      border-radius: 0.5rem;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .card-body {
-      margin-top: 1rem;
-    }
-
-    .icon {
-      margin-right: 0.75rem;
-    }
-  </style>
-</head>
-
+@section('title', 'Attendant Ddashboard')
+@section('content')
 <body class="bg-gray-100 font-sans">
   <div class="flex flex-col min-h-screen">
     <!-- Header -->
@@ -193,6 +164,4 @@
       </div>
     </main>
   </div>
-</body>
-
-</html>
+@endsection

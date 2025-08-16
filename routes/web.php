@@ -1,20 +1,28 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 
 Route::get('/', function () {
-    return view('auth.login');
+    return redirect()->route('welcome');
 });
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/overview', function () {
+Route::view('/welcome', 'welcome')->name('welcome');
+// Route::get('/overview', function () {
+//     return view('admin.overview');
+// })->middleware(middleware: ['auth', 'verified'])->name('overview');
+// Admin overview route for superadmin
+Route::get('/admin-overview', function () {
     return view('admin.overview');
-})->middleware(middleware: ['auth', 'verified'])->name('overview');
+})->middleware(['auth', 'verified'])->name('overview');
+
+// Attendant overview route
+Route::get('/attendant-overview', function () {
+    return view('attendant.overview');
+})->middleware(['auth', 'verified'])->name('attendant.overview');
 Route::middleware(['auth', 'verified'])
     ->prefix('products')
     ->controller(ProductController::class)
@@ -41,6 +49,9 @@ Route::middleware(['auth', 'verified'])
         Route::delete('/{category}',  'destroy')->name('categories.destroy');
         Route::put('/{category}',  'update')->name('categories.update');
     });
+Route::get('/set-password', [AuthController::class, 'showSetPasswordForm'])->name('password.set');
+Route::post('/set-password', [AuthController::class, 'setPassword'])->name('password.update');
+
 Route::view('/daily-sales', 'admin.daily-sales')->middleware(['auth', 'verified'])->name('daily-sales');
 Route::get('/low-stock', [ProductController::class, 'lowStock'])
     ->name('products.lowStock');

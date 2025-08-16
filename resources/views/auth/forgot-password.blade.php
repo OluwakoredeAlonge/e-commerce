@@ -67,7 +67,7 @@
             <!-- Back to Login -->
             <p class="text-sm text-center text-gray-600">
                 Remembered your password? 
-                <a href="{{ route('login') }}" class="text-blue-600 hover:underline">Login</a>
+                <a href="{{ route('welcome') }}" class="text-blue-600 hover:underline">Login</a>
             </p>
         </form>
     </div>
